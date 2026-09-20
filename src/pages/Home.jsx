@@ -8,6 +8,8 @@ const menuItems = [
   { label: 'レーン状況', path: '/lanes' },
   { label: '売上・利用履歴', path: '/sales' },
   { label: 'コーチシフト管理', path: '/coach-shifts' },
+  { label: '決済確認', path: '/payments' },
+  { label: 'スタッフ登録', path: '/staff-register' },
 ];
 
 function Home() {

@@ -8,6 +8,8 @@ import LaneStatus from './pages/LaneStatus';
 import Sales from './pages/Sales';
 import CoachShifts from './pages/CoachShifts';
 import StaffAttendance from './pages/StaffAttendance';
+import Payments from './pages/Payments';
+import StaffRegister from './pages/StaffRegister';
 import './App.css';
 
 function Placeholder({ title }) {
@@ -26,7 +28,9 @@ function App() {
         <Route path="/lanes" element={<LaneStatus />} />
         <Route path="/sales" element={<Sales />} />
         <Route path="/coach-shifts" element={<CoachShifts />} />
-        <Route path="/staff-attendance" element={<StaffAttendance />} />        
+        <Route path="/staff-attendance" element={<StaffAttendance />} />
+        <Route path="/payments" element={<Payments />} />
+        <Route path="/staff-register" element={<StaffRegister />} />
       </Routes>
     </BrowserRouter>
   );
