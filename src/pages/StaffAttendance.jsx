@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import client from '../api/client';
+import { formatErrorMessage } from '../utils/errorMessage';
 
 function formatJST(isoString) {
   if (!isoString) return '';
@@ -39,7 +40,7 @@ function StaffAttendance() {
         setAttendance(res.data);
         setError('');
       })
-      .catch((err) => setError(err.response?.data?.detail || '出勤打刻に失敗しました'));
+      .catch((err) => setError(formatErrorMessage(err, '出勤打刻に失敗しました')));
   };
 
   const handleClockOut = () => {
@@ -50,7 +51,7 @@ function StaffAttendance() {
         setAttendance(res.data);
         setError('');
       })
-      .catch((err) => setError(err.response?.data?.detail || '退勤打刻に失敗しました'));
+      .catch((err) => setError(formatErrorMessage(err, '退勤打刻に失敗しました')));
   };
 
   return (

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import client from '../api/client';
+import { formatErrorMessage } from '../utils/errorMessage';
 
 const statusOptions = [
   { value: 'all_present', label: '全員出席' },
@@ -31,8 +32,7 @@ function ClassAttendance() {
         setRecorded((prev) => ({ ...prev, [classSessionId]: attendanceStatus }));
       })
       .catch((err) => {
-        const detail = err.response?.data?.detail || '記録に失敗しました';
-        setError(detail);
+        setError(formatErrorMessage(err, '記録に失敗しました'));
       });
   };
 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import client from '../api/client';
+import { formatErrorMessage } from '../utils/errorMessage';
 
 const paymentMethodOptions = [
   { value: 'cash', label: '現金' },
@@ -34,6 +35,10 @@ function Payments() {
   const [payError, setPayError] = useState('');
 
   const handleCalculate = () => {
+    if (!laneId) {
+      setCalcError('レーンIDは必須です');
+      return;
+    }
     client
       .post('/api/v1/payments/calculate', {
         lane_id: Number(laneId),
@@ -46,10 +51,18 @@ function Payments() {
         setCalcError('');
         setAmount(String(res.data.total_amount));
       })
-      .catch((err) => setCalcError(err.response?.data?.detail || '計算に失敗しました'));
+      .catch((err) => setCalcError(formatErrorMessage(err, '計算に失敗しました')));
   };
 
   const handleCreatePayment = () => {
+    if (!checkinId) {
+      setCreateError('チェックインIDは必須です');
+      return;
+    }
+    if (!amount || Number(amount) <= 0) {
+      setCreateError('金額は1円以上で入力してください');
+      return;
+    }
     client
       .post('/api/v1/payments', {
         payer_type: payerType,
@@ -64,17 +77,21 @@ function Payments() {
         setCreateError('');
         setPayPaymentId(String(res.data.id));
       })
-      .catch((err) => setCreateError(err.response?.data?.detail || '登録に失敗しました'));
+      .catch((err) => setCreateError(formatErrorMessage(err, '登録に失敗しました')));
   };
 
   const handlePay = () => {
+    if (!payPaymentId) {
+      setPayError('決済IDは必須です');
+      return;
+    }
     client
       .post(`/api/v1/payments/${payPaymentId}/pay`, { payment_method: payMethod })
       .then((res) => {
         setPayResult(res.data);
         setPayError('');
       })
-      .catch((err) => setPayError(err.response?.data?.detail || '精算に失敗しました'));
+      .catch((err) => setPayError(formatErrorMessage(err, '精算に失敗しました')));
   };
 
   return (

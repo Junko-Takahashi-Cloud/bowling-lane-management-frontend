@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import client from '../api/client';
+import { formatErrorMessage } from '../utils/errorMessage';
 
 const dayOptions = [
   { value: 'monday', label: '月' },
@@ -60,7 +61,7 @@ function CoachShifts() {
         setShifts(res.data);
         setError('');
       })
-      .catch((err) => setError(err.response?.data?.detail || '取得に失敗しました'));
+      .catch((err) => setError(formatErrorMessage(err, '取得に失敗しました')));
   };
 
   const handleAddInstructor = () => {
@@ -77,9 +78,7 @@ function CoachShifts() {
         setInstructorId(String(res.data.id));
       })
       .catch((err) => {
-        const detail = err.response?.data?.detail;
-        const message = typeof detail === 'string' ? detail : Array.isArray(detail) ? detail.map((d) => d.msg).join(' / ') : '登録に失敗しました';
-        setAddError(message);
+        setAddError(formatErrorMessage(err, '登録に失敗しました'));
       });
   };
 
@@ -95,14 +94,14 @@ function CoachShifts() {
         setError('');
         fetchShifts(instructorId);
       })
-      .catch((err) => setError(err.response?.data?.detail || '登録に失敗しました'));
+      .catch((err) => setError(formatErrorMessage(err, '登録に失敗しました')));
   };
 
   const handleDeleteShift = (shiftId) => {
     client
       .delete(`/api/v1/coach-shifts/${shiftId}`)
       .then(() => fetchShifts(instructorId))
-      .catch((err) => setError(err.response?.data?.detail || '削除に失敗しました'));
+      .catch((err) => setError(formatErrorMessage(err, '削除に失敗しました')));
   };
 
   return (

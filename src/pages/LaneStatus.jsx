@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import client from '../api/client';
+import { formatErrorMessage } from '../utils/errorMessage';
 
 const statusOptions = [
   { value: 'available', label: '空き' },
@@ -47,8 +48,7 @@ function LaneStatus() {
         fetchLanes();
       })
       .catch((err) => {
-        const detail = err.response?.data?.detail || '更新に失敗しました';
-        setError(detail);
+        setError(formatErrorMessage(err, '更新に失敗しました'));
       });
   };
 

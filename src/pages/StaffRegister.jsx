@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import client from '../api/client';
+import { formatErrorMessage } from '../utils/errorMessage';
 
 function StaffRegister() {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ function StaffRegister() {
         setName('');
         setPin('');
       })
-      .catch((err) => setError(err.response?.data?.detail || '登録に失敗しました'));
+      .catch((err) => setError(formatErrorMessage(err, '登録に失敗しました')));
   };
 
   return (

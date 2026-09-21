@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import client from '../api/client';
+import { formatErrorMessage } from '../utils/errorMessage';
 
 function Checkin() {
   const [searchParams] = useSearchParams();
@@ -37,8 +38,7 @@ function Checkin() {
         setMessage(`チェックイン完了: セット${laneSetId}(レーンID ${laneNumbers})`);
       })
       .catch((err) => {
-        const detail = err.response?.data?.detail || 'チェックインに失敗しました';
-        setError(detail);
+        setError(formatErrorMessage(err, 'チェックインに失敗しました'));
       });
   };
 
